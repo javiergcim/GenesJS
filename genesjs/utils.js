@@ -8,13 +8,10 @@
 * @returns {number} Un valor que corresponde a la variable aleatoria.
 **/
 export function geometric_dist(p) {
-    if (p == 1.0) {
-        return 1;
-    } else if (p == 0.0) {
-        return Number.MAX_VALUE;
-    } else {
-        return Math.ceil(Math.log(1.0 - Math.random()) / Math.log(1.0 - p));
+    if (p == 1.0 || p <= 0.0) {
+        return p === 1.0 ? 1 : Infinity;
     }
+    return Math.ceil(Math.log(1.0 - Math.random()) / Math.log(1.0 - p));
 }
 
 /**
@@ -29,9 +26,9 @@ export function geometric_dist(p) {
 * @returns {float|int} Un valor distribuido normalmente.
 **/
 export function gauss_dist(mean, sd, integer) {
-    var x = 1.0 - Math.random();
-    var y = Math.random();
-    var v = Math.sqrt(-2.0 * Math.log(x)) * Math.cos(2.0 * Math.PI * y) * sd + mean;
+    const x = 1.0 - Math.random();
+    const y = Math.random();
+    const v = Math.sqrt(-2.0 * Math.log(x)) * Math.cos(2.0 * Math.PI * y) * sd + mean;
 
     if (integer) {
         return Math.round(v);
@@ -53,12 +50,12 @@ export function gauss_dist(mean, sd, integer) {
 * @returns {array} Un arreglo con el número codificado en binario.
 **/
 export function dec_to_bin(num, sign, i_dig, d_dig) {
-    var max_abs_value =
+    let max_abs_value =
         (Math.pow(2, i_dig) - 1) +
         (Math.pow(2, d_dig) - 1) / Math.pow(2, d_dig);
 
     // Se establece bit se signo (si existe)
-    var binary;
+    let binary;
     if (sign) {
         if (num < 0.0) {
             binary = ['1'];
@@ -69,12 +66,12 @@ export function dec_to_bin(num, sign, i_dig, d_dig) {
         binary = [];
     }
 
-    var tmp_binary;
-    var abs_num;
-    var numint;
-    var numdec;
-    var binint;
-    var bindec;
+    let tmp_binary;
+    let abs_num;
+    let numint;
+    let numdec;
+    let binint;
+    let bindec;
 
     if (num < 0.0 && !sign) {  // Debe ser cero
         tmp_binary = new Array(i_dig + d_dig).fill('0');
@@ -118,9 +115,9 @@ export function dec_to_bin(num, sign, i_dig, d_dig) {
 * @param {array} elements - Un arreglo con los elementos a permutar.
 **/
 export function fisher_yates(elements) {
-    var max = elements.length;
-    var r;
-    var temp;
+    let max = elements.length;
+    let r;
+    let temp;
 
     while (max > 0) {
         r = Math.floor(Math.random() * max);
@@ -154,9 +151,11 @@ export function sample_for_range(min, max, n) {
     const elements = Array.from({ length: max - min + 1 }, (_, i) => min + i);
     const max_i = max - min;
     let i = 0;
+    let r;
+    let temp;
     while (i <= n) {
-        const r = Math.floor(Math.random() * (max_i - i + 1)) + i;
-        const temp = elements[r];
+        r = Math.floor(Math.random() * (max_i - i + 1)) + i;
+        temp = elements[r];
         elements[r] = elements[i];
         elements[i] = temp;
         i++;

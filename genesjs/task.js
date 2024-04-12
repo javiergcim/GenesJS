@@ -155,11 +155,11 @@ export class Task {
     * redujo o quedó igual.
     */
     adjust_population_size(n = null) {
-        var current_size = this.population.length;
-        var max_index = current_size - 1;
-        var re_evaluate;
-        var index;
-        var born;
+        let current_size = this.population.length;
+        let max_index = current_size - 1;
+        let re_evaluate;
+        let index;
+        let born;
 
         // Se ajusta o no el atributo desired_size, y se establece n final
         if (n === null) {
@@ -168,7 +168,7 @@ export class Task {
             this.desired_size = n;
         }
 
-        var diff = n - current_size;  // + Si le faltan, - si le sobran
+        let diff = n - current_size;  // + Si le faltan, - si le sobran
 
         // Se debe truncar o quedó igual
         if (diff <= 0) {
@@ -201,11 +201,11 @@ export class Task {
     remove_duplicate_fitness() {
         // Ordenamos la población
         this.order_population();
-        var real_size = this.population.length;
-        var new_fit;
+        let real_size = this.population.length;
+        let new_fit;
 
-        var new_population = [this.population[0]];
-        var current_fit = new_population[0].get_fitness();
+        let new_population = [this.population[0]];
+        let current_fit = new_population[0].get_fitness();
         for (let i = 1; i < real_size; i++) {
             new_fit = this.population[i].get_fitness();
             if (current_fit.toString() != new_fit.toString()) {
@@ -272,13 +272,13 @@ export class Task {
     * es menor.
     **/
     order_individual(a, b) {
-        var a_fit = a.get_fitness();
-        var b_fit = b.get_fitness();
+        let a_fit = a.get_fitness();
+        let b_fit = b.get_fitness();
 
-        for (var i = 0; i < this.target_obj.length; i++) {
-            var objective = this.target_obj[i];
+        for (let i = 0; i < this.target_obj.length; i++) {
+            let objective = this.target_obj[i];
 
-            var x, y;
+            let x, y;
             if (a_fit === null) {
                 x = Infinity;
             } else {
@@ -404,8 +404,8 @@ export class Task {
     * penalización como funciones objetivo en la tarea.
     **/
     set_constraints(constraints, max_penalties) {
-        var n_penalties = max_penalties.length;
-        var n_constraints = constraints.length;
+        let n_penalties = max_penalties.length;
+        let n_constraints = constraints.length;
 
         if (n_penalties == this.objectives.length) {
             this.constraints = constraints;
@@ -526,15 +526,15 @@ export class Task {
     * la tarea.
     **/
     evaluate() {
-        var data = this.data;
-        var n_evals = this.objectives.length;
-        var n_constraints = this.constraints ? this.constraints.length : 0;
+        let data = this.data;
+        let n_evals = this.objectives.length;
+        let n_constraints = this.constraints ? this.constraints.length : 0;
 
-        for (var i = 0; i < this.population.length; i++) {
-            var son = this.population[i];
-            var fit;
-            var son_genome;
-            var failed;
+        for (let i = 0; i < this.population.length; i++) {
+            let son = this.population[i];
+            let fit;
+            let son_genome;
+            let failed;
 
             if (son.get_fitness() === null) {  // Si no tiene fitness
                 fit = [];
@@ -542,16 +542,16 @@ export class Task {
 
                 // Calculamos las restricciones
                 failed = 0;
-                for (var j = 0; j < n_constraints; j++) {
+                for (let j = 0; j < n_constraints; j++) {
                     failed += this.constraints[j](son_genome, data);
                 }
 
                 if (failed == 0) {  // Calculamos objetivos si cumple restric.
-                    for (var k = 0; k < n_evals; k++) {
+                    for (let k = 0; k < n_evals; k++) {
                         fit.push(this.objectives[k](son_genome, data));
                     }
                 } else {  // Aplicamos penalización si no cumple restricciones
-                    for (var l = 0; l < n_evals; l++) {
+                    for (let l = 0; l < n_evals; l++) {
                         fit.push(this.penalties[l] * failed);
                     }
                 }
@@ -564,7 +564,7 @@ export class Task {
     /** Aplica la función de mutación a todos los individuos de la población.
     **/
     mutate() {
-        var pop_size = this.population.length;
+        let pop_size = this.population.length;
         for (let i = 0; i < pop_size; i++) {
             this.mutator(this, this.population[i], this.mutator_args);
         }
