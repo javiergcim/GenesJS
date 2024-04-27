@@ -115,17 +115,9 @@ export function dec_to_bin(num, sign, i_dig, d_dig) {
 * @param {array} elements - Un arreglo con los elementos a permutar.
 **/
 export function fisher_yates(elements) {
-    let max = elements.length;
-    let r;
-    let temp;
-
-    while (max > 0) {
-        r = Math.floor(Math.random() * max);
-        max--;
-
-        temp = elements[r];
-        elements[r] = elements[max];
-        elements[max] = temp;
+    for (let i = elements.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [elements[i], elements[j]] = [elements[j], elements[i]];
     }
 }
 
