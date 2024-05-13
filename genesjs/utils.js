@@ -11,7 +11,7 @@ export function geometric_dist(p) {
     if (p == 1.0 || p <= 0.0) {
         return p === 1.0 ? 1 : Infinity;
     }
-    return Math.ceil(Math.log(1.0 - Math.random()) / Math.log(1.0 - p));
+    return Math.ceil(Math.log1p(Math.random()) / Math.log1p(-p));
 }
 
 /**
